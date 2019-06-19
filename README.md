@@ -1,9 +1,11 @@
 # mnist_web_with_cassandra
 
+![Docker Build Status](https://img.shields.io/badge/docker-pushed-brightgreen.svg)
+
 Running tensorflow's mnist with web server, cassandra and docker.
 
 ## Fast launch via docker
-Just clone the project and run the commands below.
+Just clone the project and run the commands below. or pull it from [Docker Hub](https://cloud.docker.com/repository/docker/gtbl2012/mnist-web).
 ```
 cd mnist_web_with_cassandra
 docker build -t mnist_web:v1.0 .
