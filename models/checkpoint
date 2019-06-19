@@ -1,0 +1,2 @@
+model_checkpoint_path: "/Users/gtbl2012/Desktop/workspace/mnist_web/lib/../models/softmax_model.ckpt"
+all_model_checkpoint_paths: "/Users/gtbl2012/Desktop/workspace/mnist_web/lib/../models/softmax_model.ckpt"

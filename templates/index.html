@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Mnist-Web</title>
+    <link rel="stylesheet" type="text/css" href="/static/css/bootstrap.min.css">
+    <style>
+        .result {
+            width: 100%;
+            height: 200px;
+            font-size: 120px;
+            text-align: center;
+            color: rgba(0, 195, 255, 0.295);
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                    data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#">Mnist-Web</a>
+            </div>
+        </div>
+        <!-- /.container-fluid -->
+    </nav>
+
+    <div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" id="error-msg-modal">
+        <div class="modal-dialog modal-sm" role="document">
+            <div class="modal-content">
+            </div>
+            <div class="alert alert-danger">
+                <strong>错误！</strong><span id="error-msg-text">您的网络连接有问题。</span>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6"></div>
+        <div class="col-md-6"></div>
+    </div>
+    <div class="container">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">
+                    <span class="glyphicon glyphicon-wrench" aria-hidden="true"></span> 选项 <small>Option</small>
+                </h3>
+            </div>
+            <div class="panel-body">
+                <div class="alert alert-warning">
+                    <strong>注意</strong><span id="error-msg-text">根据服务器性能，deep算法等待时间可能会略长。Deep algorithm may cost more time to finish.</span>
+                </div>
+                <label>算法</label>
+                <select class="form-control" id="algorithm-select">
+                    <option value="softmax">softmax</option>
+                    <option value="deep">deep</option>
+                </select>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">
+                            <span class="glyphicon glyphicon-upload" aria-hidden="true"></span> 上传图片
+                            <small>Upload</small>
+                        </h3>
+                    </div>
+                    <div class="panel-body">
+                        <a href="#" class="thumbnail" id="upload-btn">
+                            <img data-src="holder.js/100%x180" alt="100%x180"
+                                style="height: 180px; width: 180px; display: block;" src="/static/upload_hint.png"
+                                data-holder-rendered="true" id="upload-image">
+                        </a>
+                        <div class="hidden">
+                            <input type="file" id="upload-input"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">
+                            <span class="glyphicon glyphicon-download-alt" aria-hidden="true"></span> 判断结果
+                            <small>Result</small>
+                        </h3>
+                    </div>
+                    <div class="panel-body">
+                        <p class="result" id="result-field">NULL</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">
+                    <span class="glyphicon glyphicon-calendar" aria-hidden="true"></span> 历史记录 <small>History</small>
+                </h3>
+            </div>
+            <div class="panel-body">
+                <ul class="list-group" id="history-field">
+                    
+                </ul>
+            </div>
+        </div>
+    </div>
+    <script src="/static/js/bootstrap.min.js"></script>
+    <script>
+        document.querySelector('#upload-btn').addEventListener('click', () => {
+            document.querySelector('#upload-input').click();
+        });
+        document.querySelector('#upload-input').addEventListener('change', () => {
+            getPredictResult();
+        }, false);
+        function getPredictResult() {
+            document.querySelector('#result-field').innerHTML = 'WAIT';
+            var formData = new FormData();
+            var fileField = document.querySelector("input[type='file']");
+
+            formData.append('image', fileField.files[0]);
+            algorithm = document.querySelector('#algorithm-select').value;
+            fetch('/api/' + algorithm, {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .catch(error => console.error('Error:', error))
+            .then(response => {
+                document.querySelector('#upload-input').value = '';
+                document.querySelector('#result-field').innerHTML = response.predict_result;
+                document.querySelector('#upload-image').src = response.file_path;
+                getHistory();
+            });
+        }
+        function getHistory() {
+            historyTemplate = `
+                <li class="list-group-item">
+                    <div class="media">
+                        <div class="media-left">
+                            <a href="/url/" download="sample">
+                                <img style="height: 40px;width: 40px;" class="media-object" src="/url/">
+                            </a>
+                        </div>
+                        <div class="media-body">
+                            <h4 class="media-heading">/result/</h4>
+                            /createtime/
+                        </div>
+                    </div>
+                </li>
+            `;
+            document.querySelector('#history-field').innerHTML = "";
+            fetch('/api/getHistory')
+            .then(response => response.json())
+            .catch(error => console.error('Error:', error))
+            .then(response => {
+                for(item of response.data) {
+                    newTemplate = historyTemplate;
+                    newTemplate = newTemplate.replace("/url/", item.url);
+                    newTemplate = newTemplate.replace("/url/", item.url);
+                    newTemplate = newTemplate.replace("/result/", item.result);
+                    newTemplate = newTemplate.replace("/createtime/", item.createtime);
+                    document.querySelector('#history-field').innerHTML += newTemplate;
+                }
+            });
+        }
+        getHistory();
+    </script>
+</body>
+
+</html>
