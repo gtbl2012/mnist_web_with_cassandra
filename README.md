@@ -20,8 +20,9 @@ pip install -r requirements.txt
 python3 ./lib/mnist_deep_train.py
 python3 ./lib/mnist_softmax_train.py
 ```
-3. launch web server
+3. set cassandra host and launch web server
 ```
+export CASSANDRA_HOST={your cassandra host:port}
 python3 app.py
 ```
 
