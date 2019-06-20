@@ -31,4 +31,4 @@ python3 app.py
 ## Try the project
 visit [localhost](http://localhost/) after launched the project.
 
-or try our [online version](mnist.gtbl2012.cn).(may be not available)
+or try our [online version](http://mnist.gtbl2012.cn).(may be not available)
