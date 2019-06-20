@@ -9,7 +9,7 @@ Just clone the project and run the commands below. or pull it from [Docker Hub](
 ```
 cd mnist_web_with_cassandra
 docker build -t mnist_web:v1.0 .
-docker run --name "mnist_web"  -e CASSANDRA_HOST={your cassandra host:port} -p 80:80 -d mnist_web:v1.0
+docker run --name "mnist_web"  -e CASSANDRA_HOST={your cassandra host:port} -p 80:80 -d gtbl2012/mnist_web:v1.0
 ```
 
 ## Run in local mechine
