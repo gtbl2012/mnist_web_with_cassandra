@@ -35,3 +35,6 @@ or try our [online version](http://mnist.gtbl2012.cn).(may be not available)
 
 ## Demo video
 [Download](https://github.com/gtbl2012/mnist_web_with_cassandra/raw/master/demo_video.mov)
+
+## Project report
+[View](https://github.com/gtbl2012/mnist_web_with_cassandra/blob/master/report/%E8%BF%9C%E7%A8%8B%E7%A7%91%E7%A0%94%E9%A1%B9%E7%9B%AE%E6%8A%A5%E5%91%8A%20%E4%BD%95%E5%86%A0%E5%B2%9A.pdf)
