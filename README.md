@@ -32,3 +32,6 @@ python3 app.py
 visit [localhost](http://localhost/) after launched the project.
 
 or try our [online version](http://mnist.gtbl2012.cn).(may be not available)
+
+## Demo video
+[Download](https://github.com/gtbl2012/mnist_web_with_cassandra/raw/master/demo_video.mov)
